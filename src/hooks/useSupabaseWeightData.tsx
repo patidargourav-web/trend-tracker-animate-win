@@ -28,6 +28,7 @@ export const useSupabaseWeightData = () => {
         const { data: weightEntries, error: weightError } = await supabase
           .from('user_weights')
           .select('*')
+          .eq('user_id', user.id)
           .order('date', { ascending: true });
 
         if (weightError) throw weightError;
@@ -36,6 +37,7 @@ export const useSupabaseWeightData = () => {
         const { data: goalData, error: goalError } = await supabase
           .from('user_goals')
           .select('*')
+          .eq('user_id', user.id)
           .single();
 
         if (goalError && goalError.code !== 'PGRST116') {
@@ -87,6 +89,7 @@ export const useSupabaseWeightData = () => {
       const { data: existingEntry } = await supabase
         .from('user_weights')
         .select('id')
+        .eq('user_id', user.id)
         .eq('date', date)
         .single();
 
@@ -112,10 +115,15 @@ export const useSupabaseWeightData = () => {
           description: `Updated weight entry for ${date}`
         });
       } else {
-        // Add new entry
+        // Add new entry - Now including the user_id field
         const { error } = await supabase
           .from('user_weights')
-          .insert({ weight, date });
+          .insert({ 
+            weight, 
+            date, 
+            user_id: user.id,
+            notes: '' // adding empty notes field
+          });
 
         if (error) throw error;
 
@@ -155,6 +163,7 @@ export const useSupabaseWeightData = () => {
       const { data: existingGoal } = await supabase
         .from('user_goals')
         .select('id')
+        .eq('user_id', user.id)
         .single();
 
       if (existingGoal) {
@@ -169,12 +178,14 @@ export const useSupabaseWeightData = () => {
 
         if (error) throw error;
       } else {
-        // Add new goal
+        // Add new goal - Now including the user_id field
         const { error } = await supabase
           .from('user_goals')
           .insert({ 
             target_weight: goal,
-            target_date: targetDate || null
+            target_date: targetDate || null,
+            user_id: user.id,
+            start_date: new Date().toISOString().split('T')[0] // Adding today's date as start_date
           });
 
         if (error) throw error;
@@ -205,6 +216,7 @@ export const useSupabaseWeightData = () => {
       const { error } = await supabase
         .from('user_weights')
         .delete()
+        .eq('user_id', user.id)
         .eq('date', date);
 
       if (error) throw error;
