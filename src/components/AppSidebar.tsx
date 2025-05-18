@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -13,14 +14,19 @@ import {
   SidebarTrigger
 } from '@/components/ui/sidebar';
 import { ChartLine, Weight, ArrowUp, ArrowDown, Calendar } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export function AppSidebar() {
+  const { pathname } = useLocation();
+  const { user } = useAuth();
+  
   const menuItems = [
     { title: 'Dashboard', icon: ChartLine, url: '/' },
     { title: 'Log Weight', icon: Weight, url: '/log' },
-    { title: 'Progress', icon: ArrowUp, url: '/progress' },
-    { title: 'History', icon: Calendar, url: '/history' }
+    { title: 'Progress', icon: ArrowUp, url: '/progress' }
   ];
+
+  if (!user) return null;
 
   return (
     <Sidebar>
@@ -39,11 +45,11 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-2">
+                  <SidebarMenuButton asChild className={pathname === item.url ? "bg-accent" : ""}>
+                    <Link to={item.url} className="flex items-center gap-2">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
