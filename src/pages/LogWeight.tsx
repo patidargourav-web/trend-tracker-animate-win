@@ -30,7 +30,7 @@ const LogWeight = () => {
     }
     
     const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-    addWeightEntry(parseFloat(weight), formattedDate);
+    addWeightEntry(parseFloat(weight), formattedDate, notes);
     
     setWeight('');
     setNotes('');
