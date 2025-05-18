@@ -63,7 +63,7 @@ const Progress = () => {
     <RequireAuth>
       <div className="min-h-screen bg-background">
         <SidebarProvider>
-          <div className="flex min-h-screen">
+          <div className="flex min-h-screen w-full">
             <AppSidebar />
             <div className="flex-1 p-6 lg:p-10">
               <div className="max-w-7xl mx-auto space-y-8">

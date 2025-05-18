@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger
 } from '@/components/ui/sidebar';
-import { ChartLine, Weight, ArrowUp, ArrowDown, Calendar } from 'lucide-react';
+import { ChartLine, Weight, ArrowUp } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export function AppSidebar() {
@@ -46,7 +46,7 @@ export function AppSidebar() {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className={pathname === item.url ? "bg-accent" : ""}>
-                    <Link to={item.url} className="flex items-center gap-2">
+                    <Link to={item.url} className="flex items-center gap-2 w-full">
                       <item.icon className="h-5 w-5" />
                       <span>{item.title}</span>
                     </Link>
